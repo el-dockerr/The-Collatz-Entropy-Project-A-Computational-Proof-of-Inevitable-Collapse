@@ -7,7 +7,7 @@
 typedef unsigned long long u64;
 
 int main() {
-    u64 scan_count = 1000000; // Wir scannen eine Million Zahlen
+    u64 scan_count = 1000000; // Scan one million numbers
     
     double total_log_growth = 0.0;
     double total_log_shrink = 0.0;
@@ -15,29 +15,27 @@ int main() {
     u64 total_odd_steps = 0;
     u64 total_divisions = 0;
 
-    std::cout << "--- PAPER 2: DIGITALE SCHWERKRAFT ---\n";
-    std::cout << "Wir messen den Kampf: log2(3) Wachstum vs. Divisionen.\n";
-    std::cout << "Theoretisches Limit: Wir brauchen > 1.585 Divisionen pro Schritt, um zu schrumpfen.\n\n";
+    std::cout << "--- PAPER 2: DIGITAL GRAVITY ---\n";
+    std::cout << "Measuring the contest: log2(3) growth vs. divisions.\n";
+    std::cout << "Theoretical threshold: > 1.585 divisions per step required to shrink.\n\n";
 
-    for (u64 i = 3; i < scan_count; i += 2) { // Nur ungerade Startzahlen
+    for (u64 i = 3; i < scan_count; i += 2) { // Odd starting numbers only
         u64 curr = i;
         
-        // Wir simulieren, bis die Zahl kleiner als der Startwert ist 
-        // (denn ab da wissen wir per Induktion, dass sie zu 1 geht)
+        // Simulate until the value drops below the starting number
         while (curr >= i) {
-            // Schritt 1: 3n + 1
-            // Wir messen nur das Wachstum durch die 3 (die +1 ist Rauschen bei großen Zahlen)
+            // Step 1: 3n + 1
             total_odd_steps++;
             
-            // Check auf Overflow
+            // Overflow check
             if (__builtin_mul_overflow(curr, 3, &curr)) {
-                // Bei Overflow brechen wir diesen Lauf ab, um die Statistik nicht zu verfälschen
+                // Abort on overflow to avoid skewing statistics
                 curr = 1; 
                 break; 
             }
             curr += 1;
 
-            // Schritt 2: Divisionen zählen
+            // Step 2: count divisions by 2
             int divs = 0;
             while ((curr & 1) == 0) {
                 curr >>= 1;
@@ -47,28 +45,28 @@ int main() {
         }
     }
 
-    // Auswertung
+    // Analysis
     double avg_divisions_per_odd = (double)total_divisions / total_odd_steps;
     double log3 = std::log2(3.0); // ca. 1.58496
 
-    std::cout << "Analyse beendet fuer " << scan_count << " Zahlen.\n";
+    std::cout << "Analysis complete for " << scan_count << " numbers.\n";
     std::cout << "--------------------------------------------------\n";
     std::cout << "Total Odd Steps (x3):   " << total_odd_steps << "\n";
     std::cout << "Total Divisions (/2):   " << total_divisions << "\n";
     std::cout << "--------------------------------------------------\n";
-    std::cout << "Genoetigte Divisionen fuer Stillstand (log2(3)): " << log3 << "\n";
-    std::cout << "Gemessene Divisionen pro Schritt (Durchschnitt): " << avg_divisions_per_odd << "\n";
+    std::cout << "Required divisions for equilibrium (log2(3)): " << log3 << "\n";
+    std::cout << "Measured divisions per step (average):        " << avg_divisions_per_odd << "\n";
     std::cout << "--------------------------------------------------\n";
     
     double drift = log3 - avg_divisions_per_odd;
-    std::cout << "NETTO DRIFT (Bits pro Schritt): " << drift << "\n";
+    std::cout << "NET DRIFT (bits per step): " << drift << "\n";
     
     if (drift < 0) {
-        std::cout << "\n>>> ERGEBNIS: SCHWERKRAFT BESTAETIGT <<<\n";
-        std::cout << "Die Zahlen verlieren schneller an Hoehe, als sie gewinnen koennen.\n";
-        std::cout << "Das System ist dissipativ (energieverzehrend).\n";
+        std::cout << "\n>>> RESULT: GRAVITY CONFIRMED <<<\n";
+        std::cout << "Numbers lose height faster than they can gain it.\n";
+        std::cout << "The system is dissipative.\n";
     } else {
-        std::cout << "\n>>> WARNUNG: Das Monster lebt noch! <<<\n";
+        std::cout << "\n>>> WARNING: The monster still lives! <<<\n";
     }
 
     return 0;

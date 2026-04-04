@@ -2,16 +2,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-# --- KONFIGURATION ---
+# --- CONFIGURATION ---
 START_NUMBERS = [
-    27,         # Der Klassiker (wächst stark)
-    670617279,  # Ein lokales Maximum
-    97,         # Kleines "Monster"
-    (2**50)-1   # Mersenne Zahl (Startet hoch, fällt tief)
+    27,         # Classic example (grows significantly)
+    670617279,  # Local maximum
+    97,
+    (2**50)-1   # Mersenne number
 ]
 
 def collatz_trajectory(n):
-    """Berechnet die Trajektorie und gibt Bits (log2) zurück"""
+    """Computes the trajectory and returns bit-lengths (log2)."""
     values = [n]
     bits = [math.log2(n)]
     
@@ -27,21 +27,21 @@ def collatz_trajectory(n):
 
 def plot_gravity_well():
     plt.figure(figsize=(14, 8))
-    plt.style.use('dark_background') # Hacker-Style für YouTube
+    plt.style.use('dark_background')
     
     max_steps = 0
     max_height = 0
     
     colors = ['cyan', 'lime', 'magenta', 'yellow']
     
-    print("Simuliere Trajektorien...")
+    print("Simulating trajectories...")
     
-    # 1. Die echten Zahlen plotten
+    # 1. Plot trajectories
     for idx, n in enumerate(START_NUMBERS):
         y_data = collatz_trajectory(n)
         x_data = range(len(y_data))
         
-        # Stats für die Skalierung
+        # Update axis bounds
         max_steps = max(max_steps, len(y_data))
         max_height = max(max_height, max(y_data))
         
@@ -51,12 +51,10 @@ def plot_gravity_well():
                  linewidth=1.5, 
                  alpha=0.8)
 
-    # 2. Die "Todeslinie" (Gravity Line) berechnen
-    # Wir starten am höchsten Punkt des Graphs und ziehen die Linie nach unten
-    # Steigung: -0.138 Bits pro Schritt (aus Paper 2)
+    # 2. Calculate the death line (gravity line)
+    # Slope: -0.138 bits per step
     gravity_slope = -0.138 
     
-    # Wir setzen den Startpunkt der Linie etwas über das Maximum, damit man es gut sieht
     start_y = max_height
     gravity_line_x = np.array([0, max_steps])
     gravity_line_y = start_y + (gravity_line_x * gravity_slope)
@@ -81,7 +79,6 @@ def plot_gravity_well():
 
     plt.tight_layout()
     
-    # Speichern und Anzeigen
     filename = 'collatz_gravity_well.png'
     plt.savefig(filename, dpi=300)
     print(f"Grafik gespeichert als {filename}")
