@@ -53,8 +53,9 @@ The image above visualizes the "Logarithmic War."
 **Conclusion of Evidence:** No matter how high a number starts (even Mersenne numbers like $2^{50}-1$ ), it cannot escape the Entropy Decay Zone. The red line represents the speed of information destruction, which is mathematically faster than the speed of information creation in the $3n+1$ system.
 
 ## 3. Repository Structure
-* `PAPER_1.md` - The structural proof regarding binary cliffs and Mersenne limitations.
-* `PAPER_2.md` - The statistical proof regarding the negative entropy drift.
+* `PAPER_1.md`
+* `PAPER_2.md`
+* `PAPER_3.md`
 * `src/collatz_bit_mechanic.cpp` - Tool to analyze individual binary steps and carries.
 * `src/collatz_entropy.cpp` - Tool to measure the 2.00 vs 1.585 drift ratio on massive datasets.
 * `src/collatz_straitjacket.cpp` - The "Monster Hunter" algorithm.
